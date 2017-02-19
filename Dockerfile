@@ -1,5 +1,5 @@
 FROM jgreat/vote-demo-base
-MAINTAINER Team STAR-LORD
+MAINTAINER ferhi.med.amine@gmail.com
 
 #add repo
 ADD . /app
