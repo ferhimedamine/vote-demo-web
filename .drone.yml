@@ -1,41 +1,58 @@
-build:
-  image: node:6
-  environment:
-    - NPM_CONFIG_LOGLEVEL=warn
-  commands:
-    - "npm install"
-    - "npm install buildgoggles@0.2.0-3"
-    - "./node_modules/buildgoggles/bin/buildgoggles --releaseOwner=ferhimedamine --releaseBranch=master"
+pipeline:
+  build:
+    image: node:6
+    environment:
+      - NPM_CONFIG_LOGLEVEL=warn
+    commands:
+      - "npm install"
+      - "npm install buildgoggles@0.2.0-3"
+      - "./node_modules/buildgoggles/bin/buildgoggles --releaseOwner=ferhimedamine --releaseBranch=master"
 
-cache:
-  mount:
-    - node_modules
-    - .git
+  cache:
+    mount:
+      - node_modules
+      - .git
 
-publish:
-  # Publish to DockerHub - Custom drone-docker, runs on "remote" docker instance.
-  docker:
-    image: jgreat/drone-docker
-    docker_host: tcp://dind.mgmt.cloudbuzz.io:80
-    username: $$DOCKER_USER
-    password: $$DOCKER_PASS
-    email: $$DOCKER_EMAIL
-    repo: ferhimedamine/vote-demo-web
+  publish:
+    # Publish to DockerHub - Custom drone-docker, runs on "remote" docker instance.
+    docker:
+      image: jgreat/drone-docker
+      docker_host: tcp://dind.mgmt.cloudbuzz.io:80
+      username: $$DOCKER_USER
+      password: $$DOCKER_PASS
+      email: $$DOCKER_EMAIL
+      repo: ferhimedamine/vote-demo-web
 
-deploy:
-  cowpoke:
-    image: leankit/drone-cowpoke
-    docker_username: $$DOCKER_USER
-    docker_password: $$DOCKER_PASS
-    docker_repo: ferhimedamine/vote-demo-web
-    catalog_repo: ferhimedamine/rancher-vote-demo-web
-    github_token: $$GITHUB_TOKEN
-    github_user: $$GITHUB_USER
-    github_email: $$GITHUB_EMAIL
-    cowpoke_url: http://cowpoke.dev.cloudbuzz.io:80
-    rancher_catalog_name: vote-demo-web
-    bearer_token:
-  when:
-    branch:
-      include: [  feature*, bug*, fix*  ]
+  deploy:
+    cowpoke:
+      image: leankit/drone-cowpoke
+      docker_username: $$DOCKER_USER
+      docker_password: $$DOCKER_PASS
+      docker_repo: ferhimedamine/vote-demo-web
+      catalog_repo: ferhimedamine/rancher-vote-demo-web
+      github_token: $$GITHUB_TOKEN
+      github_user: $$GITHUB_USER
+      github_email: $$GITHUB_EMAIL
+      cowpoke_url: http://cowpoke.dev.cloudbuzz.io:80
+      rancher_catalog_name: vote-demo-web
+      bearer_token:
+    when:
+      branch:
+        include: [  feature*, bug*, fix*  ]
 
+  deploy:
+    cowpoke:
+      image: leankit/drone-cowpoke
+      docker_username: $$DOCKER_USER
+      docker_password: $$DOCKER_PASS
+      docker_repo: ferhimedamine/vote-demo-web
+      catalog_repo: ferhimedamine/rancher-vote-demo-web
+      github_token: $$GITHUB_TOKEN
+      github_user: $$GITHUB_USER
+      github_email: $$GITHUB_EMAIL
+      cowpoke_url: http://cowpoke.test.cloudbuzz.io:80
+      rancher_catalog_name: vote-demo-web
+      bearer_token:
+    when:
+      branch:
+        include: [  master ]
