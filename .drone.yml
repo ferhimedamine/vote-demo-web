@@ -39,7 +39,7 @@ deploy:
     branch:
       include: [  feature*, bug*, fix*  ]
 
-deploy:
+deploy2:
   cowpoke:
     image: leankit/drone-cowpoke
     docker_username: $$DOCKER_USER
