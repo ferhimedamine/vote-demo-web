@@ -22,7 +22,7 @@ publish:
     email: $$DOCKER_EMAIL
     repo: ferhimedamine/vote-demo-web
 
-deploy_dev:
+deploy:
   cowpoke:
     image: leankit/drone-cowpoke
     docker_username: $$DOCKER_USER
@@ -39,7 +39,7 @@ deploy_dev:
       branch:
         include: [  feature*, bug*, fix*  ]
 
-deploy_test:
+deploy:
   cowpoke:
     image: leankit/drone-cowpoke
     docker_username: $$DOCKER_USER
