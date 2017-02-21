@@ -1,18 +1,18 @@
-pipeline:
-  build:
-    image: node:6
-    environment:
-      - NPM_CONFIG_LOGLEVEL=warn
-    commands:
-      - "npm install"
-      - "npm install buildgoggles@0.2.0-3"
-      - "./node_modules/buildgoggles/bin/buildgoggles --releaseOwner=ferhimedamine --releaseBranch=master"
+build:
+  image: node:6
+  environment:
+    - NPM_CONFIG_LOGLEVEL=warn
+  commands:
+    - "npm install"
+    - "npm install buildgoggles@0.2.0-3"
+    - "./node_modules/buildgoggles/bin/buildgoggles --releaseOwner=ferhimedamine --releaseBranch=master"
 
-  cache:
-    mount:
-      - node_modules
-      - .git
+cache:
+  mount:
+    - node_modules
+    - .git
 
+pipeline: 
   publish:
     # Publish to DockerHub - Custom drone-docker, runs on "remote" docker instance.
     docker:
